@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Рейтинг пользователей
+{% endblock %}
+
+{% block header %}
+Рейтинг пользователей
+<div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: 100%"
+         aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+{% endblock %}
+
+{% block content %}
+<table class="table table-striped">
+    <tr>
+        <th>№</th>
+        <th>Пользователь</th>
+        <th>Откуда</th>
+        <th>Рейтинг</th>
+    </tr>
+
+    {%for usr in users%}
+    <tr>
+        <td>{{forloop.counter}}</td>
+        <td><p>{{usr.username}}</p></td>
+        <td>{{usr.city}}</td>
+        <td>{{usr.rating}}</td>
+    </tr>
+    {% endfor %}
+</table>
+    <div class="row">
+        <a class="btn btn-primary m-3" href="{% url 'index' %}">На главную</a>
+    </div>
+{% endblock %}

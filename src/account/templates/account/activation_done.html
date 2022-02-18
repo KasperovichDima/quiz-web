@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Activation comlite
+{% endblock %}
+
+{% block header %}
+    Activation comlite
+{% endblock %}
+
+{% block content %}
+    <p>User was activated successfully!</p>
+    <p><a href="{% url 'account:login' %}">Enter site</a></p>
+{% endblock %}

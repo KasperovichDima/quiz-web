@@ -1,0 +1,70 @@
+# Версия docker-compose
+version: "3.8"
+
+# Сервисы - набор описаний контейнеров
+services:
+  web:
+    # build говорит, что имидж будет собираться, а не загружаться
+    # Говорим, что dockerfile в той же директории, что и docker-compose
+    build: .
+    # Необязательный параметр, задающий имя контейнера
+    container_name: web_service
+    # команда, которая и будет запускать внутри контейнера веб-сервер
+    command: gunicorn app.wsgi:application --bind 0.0.0.0:8000
+    # python manage.py runserver 0.0.0.0:8000 # Отключили после перехода на Gunicorn
+    volumes:
+      - static_volume:/opt/src/static
+      - media_volume:/opt/src/media
+
+    # Мапинг портов (локальный:контейнер)
+#    ports:
+#      - 8010:8000
+    # Указываем имя env файла, который мы хотим использовать
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  # Сервис баз данных
+  db:
+    # Собирается из имиджа
+    image: postgres:12.0-alpine
+    container_name: db_service
+    # Подключим volume в среде докера чтобы накопленная информация БД не терялась
+    volumes:
+      # Мапим его на адрес в среде докера, причем этот адрес не меняется для POSTGRES
+      - db_volume:/var/lib/postgresql/data/
+    # Указываем порты для внешних клиентов для БД. Например для DBeaver. Не обязательно.
+    ports:
+      - 5438:5432
+    # Файл с переменными окружения, они нужны и для джанго, и для БД. Пароль от БД и пр.
+    env_file:
+      - .env
+  # Nginx сервер
+  nginx:
+    # путь к Dockerfile
+    build: ./nginx
+    container_name: nginx_service
+    volumes:
+      # Делаем 2 volume:
+      - static_volume:/opt/src/static
+      - media_volume:/opt/src/media
+    # мапинг локального порта к порту контейнера
+    ports:
+      - 80:80
+    # Запускается после старта БД (параллельно с веб)
+    depends_on:
+      - db
+
+
+
+volumes:
+  # volume базы данных
+  db_volume:
+    name: db_quiz_data
+  # volume статики
+  static_volume:
+    name: static_data
+  # volume медиа
+  media_volume:
+    name: media_data

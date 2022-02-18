@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Activation problems
+{% endblock %}
+
+{% block header %}
+    Activation problems
+{% endblock %}
+
+{% block content %}
+    <p>It seams, there was a problem with activation...</p>
+    <p><a href="{% url 'account:register' %}">Repeat registration</a></p>
+{% endblock %}
