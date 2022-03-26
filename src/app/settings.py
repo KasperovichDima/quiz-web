@@ -177,6 +177,10 @@ CELERY_BEAT_SCHEDULE = {
         "task": "core.tasks.send_email_report",
         "schedule": crontab(minute="*/1"),
     },
+    "new_user_remind": {
+        "task": "core.tasks.new_user_remind",
+        "schedule": crontab(hour="*/24"),
+    },
 }
 
 

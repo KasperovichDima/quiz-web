@@ -14,3 +14,7 @@ def simple_task():
 @shared_task
 def send_email_report():
     call_command('email_report')
+
+@shared_task
+def new_user_remind():
+    call_command('new_user_remind')
