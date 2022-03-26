@@ -90,6 +90,9 @@ class Result(BaseModel):
         verbose_name = 'Result'
         verbose_name_plural = 'Results'
 
+    def __str__(self):
+        return f'{self.user}: {self.exam} {self.num_correct_answers} {self.num_incorrect_answers}'
+
     def update_result(self, order_number, question, selected_choices):
         correct_choice = [choice.is_correct for choice in question.choices.all()]
         correct_answer = True

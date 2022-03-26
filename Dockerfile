@@ -14,7 +14,7 @@ RUN pip install --upgrade pip
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY ./src .
-COPY ./dump_quiz.json .
+# COPY ./src .
+# COPY ./dump_quiz.json .
 
 EXPOSE 8000
